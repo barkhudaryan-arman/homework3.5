@@ -74,7 +74,6 @@ class FacultyControllerTest {
 
     @Test
     void deleteFaculty() {
-        Faculty faculty = new Faculty(2L, "LALKI", "Red");
 
 
     }
