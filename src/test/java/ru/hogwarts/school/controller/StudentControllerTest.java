@@ -102,7 +102,7 @@ class StudentControllerTest {
     @Test
     void getStudentsByAgeRange() {
         Student student1 = new Student(1L, "Arman", 23);
-        Student student2 = new Student(2L, "Sara", 25);
+        Student student2 = new Student(2L, "Sako", 25);
         List<Student> expectedStudents = Arrays.asList(student1, student2);
         when(studentRepository.findByAgeBetween(20, 30)).thenReturn(expectedStudents);
 
