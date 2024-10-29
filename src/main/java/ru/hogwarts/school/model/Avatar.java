@@ -77,4 +77,5 @@ public class Avatar {
                 ", student=" + student +
                 '}';
     }
+
 }
