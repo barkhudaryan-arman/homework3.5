@@ -61,10 +61,5 @@ public class AvatarController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-    @GetMapping
-    public Page<Avatar> getAvatars(@RequestParam(defaultValue = "0") int page,
-                                   @RequestParam(defaultValue = "10") int size){
-        Pageable pageable = (Pageable) PageRequest.of(page, size);
-        return AvatarRepository.findAll(pageable);
-    }
+
 }
