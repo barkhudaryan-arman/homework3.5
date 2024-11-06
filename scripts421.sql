@@ -1,9 +1,10 @@
 ALTER TABLE Student
-ADD CONSTRAINT chk_student_age (age >= 16);
+ADD CONSTRAINT chk_student_age CHECK (age >= 16);
 
 ALTER TABLE Student
 ADD CONSTRAINT uq_student_name UNIQUE (name),
-ADD CONSTRAINT nn_student_name UNIQUE (name IS NOT NULL);
+ADD CONSTRAINT uq_student_name_age UNIQUE (name, age);
+ADD CONSTRAINT nn_student_name UNIQUE (IS NOT NULL);
 
 ALTER TABLE Faculty
 ADD CONSTRAINT uq_faculty_name_color UNIQUE (name, color);
