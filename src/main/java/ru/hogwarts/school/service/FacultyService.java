@@ -1,5 +1,7 @@
 package ru.hogwarts.school.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.repository.FacultyRepository;
@@ -11,6 +13,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class FacultyService {
+    Logger logger = LoggerFactory.getLogger(FacultyService.class);
     private final FacultyRepository facultyRepository;
 
     public FacultyService(FacultyRepository facultyRepository) {
@@ -22,11 +25,13 @@ public class FacultyService {
     }
 
     public Faculty getFacultyById(Long facultyId) {
+        logger.info("Was invoked method for get faculty by id: " + facultyId);
         return facultyRepository.findById(facultyId)
                 .orElse(null);
     }
 
     public Faculty uptadeFaculty(Long facultyId, Faculty faculty) {
+        logger.info("Was invoked method for uptade faculty by id: " + facultyId);
         if (facultyRepository.existsById(facultyId)) {
             faculty.setId(facultyId);
             return facultyRepository.save(faculty);
@@ -35,6 +40,7 @@ public class FacultyService {
     }
 
     public Faculty deleteFaculty(Long facultyId) {
+        logger.info("Was invoked method for delete faculty by id: " + facultyId);
         Faculty faculty = getFacultyById(facultyId);
         if (faculty != null) {
             facultyRepository.deleteById(facultyId);
@@ -42,6 +48,7 @@ public class FacultyService {
         return faculty;
     }
     public List<Faculty> getFacultiesByNameOrColor(String name, String color) {
+        logger.info("Was invoked method for getting faculties by name: " + name + " and color: " + color);
         return facultyRepository.findByNameIgnoreCaseOrColorIgnoreCase(name, color);
     }
 }
