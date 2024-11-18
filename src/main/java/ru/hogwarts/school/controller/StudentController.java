@@ -1,6 +1,7 @@
 package ru.hogwarts.school.controller;
 
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
@@ -11,10 +12,11 @@ import java.awt.print.Pageable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RequestMapping("/student")
+@RequestMapping("/students")
 @RestController
 
 public class StudentController {
+    private final List<String> students = List.of("Harry", "Ron", "Hermiona", "Lol", "Kek", "Cheburek")
     private final StudentService studentService;
     private final StudentRepository studentRepository;
 
@@ -82,5 +84,66 @@ public class StudentController {
                 .mapToInt(Student::getAge)
                 .average()
                 .orElse(0.0);
+    }
+    @GetMapping("/print-parallel")
+    public ResponseEntity<Void> printStudentsParallel() {
+        System.out.println(students.get(0));
+        System.out.println(students.get(1));
+
+        Thread thread1 = new Thread(() -> {
+            System.out.println(students.get(2));
+            System.out.println(students.get(3));
+        });
+
+        Thread thread2 = new Thread(() -> {
+            System.out.println(students.get(4));
+            System.out.println(students.get(5));
+        });
+
+        thread1.start();
+        thread2.start();
+
+        try {
+            thread1.join();
+            thread2.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Thread execution was interrupted", e);
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/print-synchronized")
+    public ResponseEntity<Void> printStudentsSynchronized() {
+        printSynchronized(students.get(0));
+        printSynchronized(students.get(1));
+
+        Thread thread1 = new Thread(() -> {
+            printSynchronized(students.get(2));
+            printSynchronized(students.get(3));
+        });
+
+        Thread thread2 = new Thread(() -> {
+            printSynchronized(students.get(4));
+            printSynchronized(students.get(5));
+        });
+
+        thread1.start();
+        thread2.start();
+
+        try {
+            thread1.join();
+            thread2.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Thread execution was interrupted", e);
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
+    private synchronized void printSynchronized(String student) {
+        System.out.println(student);
     }
 }
